@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>NiceClient.cc — элегантный Roblox чит</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #bb86fc;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        #backgroundCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            display: block;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem 1.5rem 3rem;
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            margin: 2rem 0 2rem;
+            width: 100%;
+        }
+
+        .logo {
+            font-size: 3rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #bb86fc, #9d4edd, #7b2cbf);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(187, 134, 252, 0.5);
+            margin-bottom: 0.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .logo {
+                font-size: 4.5rem;
+            }
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            font-weight: 300;
+            color: #e0b0ff;
+            opacity: 0.9;
+            letter-spacing: 0.3px;
+            background: rgba(20, 10, 30, 0.4);
+            backdrop-filter: blur(5px);
+            padding: 0.5rem 2rem;
+            border: 1px solid rgba(187, 134, 252, 0.3);
+            display: inline-block;
+        }
+
+        .showcase {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0 2rem;
+            width: 100%;
+        }
+
+        .card {
+            background: rgba(15, 10, 25, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(187, 134, 252, 0.3);
+            padding: 1.5rem;
+            width: 100%;
+            max-width: 500px;
+            transition: transform 0.3s ease, border-color 0.3s, box-shadow 0.3s;
+            box-shadow: 0 20px 30px -15px rgba(0, 0, 0, 0.8);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: #bb86fc;
+            box-shadow: 0 25px 35px -15px #bb86fc, 0 0 0 1px rgba(187, 134, 252, 0.2);
+        }
+
+        .card h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            color: #f0e0ff;
+            border-left: 4px solid #bb86fc;
+            padding-left: 1rem;
+        }
+
+        .image-frame {
+            background: #0d0a15;
+            border: 1px solid #3d2a5c;
+            padding: 0.8rem;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.7);
+            margin-bottom: 1.2rem;
+        }
+
+        .image-frame img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border: 1px solid #5a3d8a;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.8);
+        }
+
+        .caption {
+            font-size: 0.95rem;
+            color: #c8aaff;
+            font-weight: 300;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .caption span {
+            background: #1e1530;
+            padding: 0.3rem 1rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #d4b3ff;
+            border: 1px solid #4a2c7a;
+        }
+
+        .features {
+            background: rgba(15, 10, 25, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(187, 134, 252, 0.3);
+            padding: 2rem 1.5rem;
+            margin: 1.5rem 0 1.5rem;
+            width: 100%;
+            box-shadow: 0 15px 30px -15px #000;
+        }
+
+        .features h3 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .features h3:after {
+            content: '';
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(90deg, #bb86fc, transparent);
+        }
+
+        .grid-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .grid-features div {
+            flex: 1 1 180px;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #e0c0ff;
+            background: rgba(40, 20, 60, 0.4);
+            padding: 0.7rem 1.2rem;
+            border: 1px solid #4a2e7a;
+        }
+
+        .grid-features div::before {
+            content: '▹';
+            color: #bb86fc;
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+
+        .description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #cfb5ff;
+            border-top: 1px dashed #5a3d8a;
+            padding-top: 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .founders {
+            margin-top: 2rem;
+            padding: 1.2rem 2rem;
+            background: rgba(20, 12, 35, 0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid #5a3d8a;
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            box-shadow: 0 10px 25px -10px #000;
+            width: 100%;
+        }
+
+        .founder-item {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #e2c4ff;
+            background: rgba(75, 40, 120, 0.3);
+            padding: 0.4rem 2rem;
+            border: 1px solid #bb86fc;
+            box-shadow: 0 0 15px rgba(187, 134, 252, 0.3);
+        }
+
+        .footer-note {
+            margin-top: 2.5rem;
+            font-size: 0.9rem;
+            color: #a17fc0;
+            background: rgba(10, 5, 20, 0.5);
+            padding: 0.8rem 2rem;
+            backdrop-filter: blur(4px);
+            border: 1px solid #3d2a5a;
+            text-align: center;
+            width: 100%;
+        }
+
+        .animate-on-load {
+            animation: fadeUp 0.8s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+            opacity: 0;
+        }
+
+        .card, .features, .header, .footer-note, .founders, .subtitle {
+            opacity: 0;
+        }
+
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(25px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo { animation: fadeUp 0.7s 0.1s forwards; }
+        .subtitle { animation: fadeUp 0.7s 0.2s forwards; }
+        .card { animation: fadeUp 0.7s 0.35s forwards; }
+        .features { animation: fadeUp 0.8s 0.5s forwards; }
+        .founders { animation: fadeUp 0.8s 0.65s forwards; }
+        .footer-note { animation: fadeUp 0.8s 0.8s forwards; }
+
+        ::selection {
+            background: #9d4edd;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="backgroundCanvas"></canvas>
+    
+    <div class="container">
+        <header class="header">
+            <h1 class="logo animate-on-load">NiceClient.cc</h1>
+            <p class="subtitle animate-on-load">элегантный Roblox чит</p>
+        </header>
+
+        <div class="showcase">
+            <div class="card animate-on-load">
+                <h2>Меню чита</h2>
+                <div class="image-frame">
+                    <img src="https://raw.githubusercontent.com/inno14665-dotcom/Niceclient.lua/refs/heads/main/preview.png"
+                         alt="NiceClient Menu Interface">
+                </div>
+                <div class="caption">
+                    <span>чистый интерфейс</span>
+                    <span>горячие клавиши</span>
+                    <span>кастомизация</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="features animate-on-load">
+            <h3>особенности</h3>
+            <div class="grid-features">
+                <div>Silent Aim</div>
+                <div>Aimbot</div>
+                <div>ESP через стены</div>
+                <div>Трассеры</div>
+                <div>Triggerbot</div>
+                <div>Настраиваемый UI</div>
+                <div>Безопасный инжект</div>
+                <div>Анти-афк</div>
+                <div>Визуальный редактор</div>
+                <div>Точки-связи</div>
+            </div>
+            <div class="description">
+                NiceClient.cc — это премиальный скрипт для Roblox с элегантным тёмным дизайном и плавными анимациями. Фоновая сетка точек динамически соединяется, визуализируя работу ESP и трассеров. Чит предлагает полный набор функций для комфортной игры, при этом оставаясь незаметным и безопасным. Интерфейс выполнен в фиолетово-синих тонах, все элементы плавно появляются при загрузке.
+            </div>
+        </div>
+
+        <div class="founders animate-on-load">
+            <div class="founder-item">Agusha555</div>
+            <div class="founder-item">Agduha333</div>
+        </div>
+
+        <div class="footer-note animate-on-load">
+            NiceClient.cc — для тех, кто ценит стиль и функциональность. Roblox скрипт с премиальным дизайном.
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('backgroundCanvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let dots = [];
+        const dotCount = 40;
+        const connectionDistance = 200;
+
+        class Dot {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 1.2;
+                this.vy = (Math.random() - 0.5) * 1.2;
+                this.radius = Math.random() * 3 + 1.5;
+                this.color = `rgba(${Math.floor(Math.random() * 70 + 156)}, ${Math.floor(Math.random() * 70 + 86)}, ${Math.floor(Math.random() * 70 + 186)}, 0.8)`;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+
+                this.x = Math.min(Math.max(this.x, 0), width);
+                this.y = Math.min(Math.max(this.y, 0), height);
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.shadowColor = '#bb86fc';
+                ctx.shadowBlur = 12;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            }
+        }
+
+        function initDots() {
+            dots = [];
+            for (let i = 0; i < dotCount; i++) {
+                dots.push(new Dot());
+            }
+        }
+
+        function resizeCanvas() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+            initDots();
+        }
+
+        function drawLines() {
+            ctx.strokeStyle = '#bb86fc30';
+            ctx.lineWidth = 1;
+            for (let i = 0; i < dots.length; i++) {
+                for (let j = i + 1; j < dots.length; j++) {
+                    const dx = dots[i].x - dots[j].x;
+                    const dy = dots[i].y - dots[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < connectionDistance) {
+                        const opacity = (1 - distance / connectionDistance) * 0.4;
+                        ctx.strokeStyle = `rgba(187, 134, 252, ${opacity})`;
+                        ctx.beginPath();
+                        ctx.moveTo(dots[i].x, dots[i].y);
+                        ctx.lineTo(dots[j].x, dots[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            if (!width || !height) return;
+            
+            ctx.clearRect(0, 0, width, height);
+            
+            drawLines();
+            
+            for (let dot of dots) {
+                dot.update();
+                dot.draw();
+            }
+            
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+        });
+
+        resizeCanvas();
+        animate();
+    </script>
+</body>
+</html>
